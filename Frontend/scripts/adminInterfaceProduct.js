@@ -96,10 +96,7 @@ function createProductTable(products, currentPage) {
     table.append(thead, tbody);
     container.empty().append("<h2 class='text-center mb-0'>Produktliste</h2>", table);
 
-
 }
-
-
 
 $(document).on('click', '#previousPage', function () {
     if (currentPage > 1) {

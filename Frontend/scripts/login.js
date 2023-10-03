@@ -37,7 +37,7 @@ function checkTokenValidity() {
     if (loginTimestamp) {
         var currentTime = new Date().getTime();
         var loginTime = new Date(loginTimestamp).getTime();
-        var validityDuration = 3600 * 1000; // Gültigkeitsdauer des Tokens in Millisekunden (hier 1 Stunde)
+        var validityDuration = 3600 * 1000; // Gültigkeitsdauer des Tokens (1 Stunde)
 
         if (currentTime - loginTime >= validityDuration) {
             // Token ist abgelaufen
@@ -54,7 +54,6 @@ function checkTokenValidity() {
         }
     }
 }
-
 
 function checkAdminStatus() {
     // Token aus der Session holen
