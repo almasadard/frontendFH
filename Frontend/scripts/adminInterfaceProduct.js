@@ -153,8 +153,8 @@ function createEditProductHandler(product) {
         let row1 = $("<div class='row'></div>");
 
         let titleCol = $("<div class='col-9 mb-3 ps-0'></div>");
-        let titleLabel = $("<label for='editProductName' class='form-label p-0'>Produktname</label>");
-        let titleInput = $("<input type='text' class='form-control' id='editProductName' name='editProductName' value='" + product.name + "'></input>");
+        let titleLabel = $("<label for='editproductname' class='form-label p-0'>Produktname</label>");
+        let titleInput = $("<input type='text' class='form-control' id='editProductName' name='editProductName' value='" + product.productname + "'></input>");
         titleCol.append(titleLabel, titleInput)
 
         let activeCol = $("<div class='col-2 mb-3'></div>");
@@ -162,7 +162,6 @@ function createEditProductHandler(product) {
         let activeDropdown = $("<select class='form-control' id='editProductActive'></select>");
         activeDropdown.append($("<option value='true'>&#10004;&#65039;</option>"));
         activeDropdown.append($("<option value='false'>&#10060;</option>"));
-        activeDropdown.val(product.active.toString());
         activeCol.append(activeLabel, activeDropdown)
 
         row1.append(titleCol, activeCol);
@@ -179,12 +178,7 @@ function createEditProductHandler(product) {
         let quantityInput = $("<input type='number' class='form-control' id='editProductQuantity' name='editProductQuantity' value='" + product.quantity + "'></input>");
         col2.append(quantityLabel, quantityInput);
 
-        let col3 = $("<div class='col p-0'></div>");
-        let imgLabel = $("<label for='editProductImage' class='form-label p-0'><a>&#128444;&#65039;</a> Bild ändern</label>");
-        let imgInput = $("<input type='file' class='form-control' id='editProductImage' name='editProductImage'>");
-        col3.append(imgLabel, imgInput);
-
-        row2.append(col1, col2, col3);
+        row2.append(col1, col2);
 
         let row3 = $("<div class='row mb-3'></div>");
 
@@ -222,12 +216,11 @@ function createSaveProductHandler(product) {
         let newProductName = document.getElementById("editProductName").value;
         let newProductPrice = parseFloat($("#editProductPrice").val());
         let newProductQuantity = parseInt($("#editProductQuantity").val());
-        let newProductImg = product.imageUrl;
         let newProductDescription = $("#editProductDescription").val();
         let productIsActive = $("#editProductActive").val() === "true";
 
         if (newProductName.trim() === "") {
-            newProductName = product.name;
+            newProductName = product.productname;
         }
         if (isNaN(newProductPrice)) {
             newProductPrice = product.price;
@@ -242,10 +235,9 @@ function createSaveProductHandler(product) {
 
         let updatedProduct = {
             id: productId,
-            name: newProductName,
+            productname: newProductName,
             price: newProductPrice,
             quantity: newProductQuantity,
-            imageUrl: newProductImg,
             description: newProductDescription,
             active: productIsActive,
         };
@@ -253,7 +245,7 @@ function createSaveProductHandler(product) {
         console.log("updatedProduct: ", updatedProduct);
 
         $.ajax({
-            url: "http://localhost:8080/product/update",
+            url: "http://localhost:8080/product",
             method: "PUT",
             headers: { "Authorization": sessionStorage.getItem("token") },
             data: JSON.stringify(updatedProduct),
