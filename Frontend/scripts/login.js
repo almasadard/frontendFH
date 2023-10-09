@@ -16,9 +16,10 @@ function handleLogin(event) {
 
     $.ajax({
 // Login request
-        url: "http://localhost:8080/auth/user",
+        url: "http://localhost:8080/login",
         type: 'POST',
         contentType: "application/json",
+        header: {"Authorization" : "" },
         data: JSON.stringify(user),
         success: function (data) {
             let timestamp = new Date().toISOString();
