@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const productDescription = document.getElementById('inputProductDescription').value;
 
 
-                // Hier senden wir die restlichen Produktinformationen an den Server
+                // Hier werden die restlichen Produktinformationen an den Server gesendet
                 const product = {
                     productname: productname,
                     description: productDescription,
