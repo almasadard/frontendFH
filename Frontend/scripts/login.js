@@ -20,6 +20,9 @@ $(document).ready(function () {
         let user = setLoginData();
 
 
+
+
+
         $.ajax({
             url: 'http://localhost:8080/login',
             method: 'POST',
@@ -29,21 +32,20 @@ $(document).ready(function () {
                 },
             data: JSON.stringify(user),
             contentType: 'application/json',
-            dataType: 'json',
+            dataType: 'text',
             success: (response) => {
                 console.log(response);
-                //localStorage.setItem('accesToken', response.token);
+                localStorage.setItem('accessToken', response);
+                location.href = "./index.html";
 
                 // Token dekodieren und prüfen, ob der User Admin ist
-                var decodedToken = jwt_decode(response.token);
-                console.log("Is Admin: ", decodedToken.admin);
-                console.log("Is Admin: ", response.isAdmin);
+                //var decodedToken = jwt_decode(response.token);
 
-                if (response.isAdmin) {
-                    location.href = "adminInterfaceProduct.html";
+                /*if (response.isAdmin) {
+                    location.href = "/Frontend/adminInterfaceProduct.html";
                 } else {
-                    location.href = "index.html";
-                }
+                    location.href = "/Frontend/index.html";
+                }*/
             },
             error: (err) => {
                 console.error("Login fehlgeschlagen!", err);

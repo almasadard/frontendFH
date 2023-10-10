@@ -1,1 +1,1 @@
-$("#navbarContainer").load("/Frontend/navbar/navbaradmin.html");
+$("#navbarContainer").load("./navbar/navbaradmin.html");
