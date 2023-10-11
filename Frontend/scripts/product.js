@@ -10,13 +10,13 @@ $(document).ready(function () {
             this.price = price;
             this.quantity = quantity;
             this.description = description;
-            this.image = image;
+            //this.image = image;
         }
     }
 
     function createCardElement(product) {
         const card = $('<div>', { class: 'col-lg-3 col-md-4 col-sm-6 product-card' });
-        const img = $('<img>', { src: `${product.image}`, class: 'card-img-top', alt: `${product.productname}` });
+        //const img = $('<img>', { src: `${product.image}`, class: 'card-img-top', alt: `${product.productname}` });
         const link = $('<a>', { class: 'categorylink', href: `productdetail.html?id=${product.id}` });
         const title = $('<h3>', { text: product.productname });
 
