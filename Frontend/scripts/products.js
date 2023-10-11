@@ -1,4 +1,4 @@
-$.ajax({
+/*$.ajax({
     url: "http://localhost:8080/products/active",
     cors: true,
     headers: { "Authorization": sessionStorage.getItem("token") },
@@ -140,3 +140,4 @@ function addProductToCart(product, quantity) {
         error: console.error
     });
 }
+*/

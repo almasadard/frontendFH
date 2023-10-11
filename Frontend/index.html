@@ -89,27 +89,26 @@
 
     <div class="row">
 
-        <div class="titlekaffee-box col-lg-3">
-
-            <a class="categorylink" href="Origin.html"><h3>Origin</h3></a>
-            <p>- Der Klassische</p>
+        <div class="titlekaffee-box col-lg-3" id="product1">
+            <a class="categorylink" href="productdetail.html?product=product1"><h3>Origin</h3></a>
+            <p id="productName1">- Der Klassische</p>
             <img src="css/images/klassischkaffee.jpg" class="mw-100" alt="beans4">
         </div>
 
         <div class="titlekaffee-box col-lg-3">
-            <a class="categorylink" href="Selection.html"><h3>Selection</h3></a>
+            <a class="categorylink" href="productdetail.html?product=product2"><h3>Selection</h3></a>
             <p>- Der Außergewöhnliche</p>
             <img src="css/images/kaffeespecial.jpg" class="mw-100" alt ="beans3">
         </div>
 
         <div class="titlekaffee-box col-lg-3">
-            <a class="categorylink" href="Without.html"><h3>Without</h3></a>
+            <a class="categorylink" href="productdetail.html?product=product3"><h3>Without</h3></a>
             <p>- Der Entkoffeinierte</p>
             <img src="css/images/decaf.jpg" class="mw-100" alt ="beans5">
         </div>
 
         <div class="titlekaffee-box col-lg-3">
-            <a class="categorylink" href="Luxus.html"><h3>Luxus</h3></a>
+            <a class="categorylink" href="productdetail.html?product=product4"><h3>Luxus</h3></a>
             <p>- Der Luxuriöse</p>
             <img src="css/images/luxuskaffee.jpg" class="mw-100" alt ="beans2">
         </div>
@@ -133,25 +132,25 @@
 
         <div class="titletee-box col-lg-3">
 
-            <a class="categorylink" href="Black.html"><h3>Black</h3></a>
+            <a class="categorylink" href="productdetail.html?product=product5"><h3>Black</h3></a>
             <p>- Schwarzer Tee</p>
             <img src="css/images/blacktea.jpg" class="mw-100" alt="tea1">
         </div>
 
         <div class="titletee-box col-lg-3">
-            <a class="categorylink" href="Green.html"><h3>Green</h3></a>
+            <a class="categorylink" href="productdetail.html?product=product6"><h3>Green</h3></a>
             <p>- Grüner Tee</p>
             <img src="css/images/greentea.jpg" class="mw-100" alt ="tea2">
         </div>
 
         <div class="titletee-box col-lg-3">
-            <a class="categorylink" href="Relax.html"><h3>Relax</h3></a>
+            <a class="categorylink" href="productdetail.html?product=product7"><h3>Relax</h3></a>
             <p>- Entspannung </p>
             <img src="css/images/relaxtea.jpg" class="mw-100" alt ="tea3">
         </div>
 
         <div class="titletee-box col-lg-3">
-            <a class="categorylink" href="Fit.html"><h3>Fit</h3></a>
+            <a class="categorylink" href="productdetail.html?product=product8"><h3>Fit</h3></a>
             <p>- Immunsystem </p>
             <img src="css/images/fittea.jpg" class="mw-100" alt ="tea4">
         </div>
@@ -175,25 +174,25 @@
 
         <div class="titlespices-box col-lg-3">
 
-            <a class="categorylink" href="Yellow.html"><h3>Yellow</h3></a>
+            <a class="categorylink" href="productdetail.html?product=product9"><h3>Yellow</h3></a>
             <p>- Kurkuma </p>
             <img src="css/images/yellowspice.jpg" class="mw-100" alt="spice1">
         </div>
 
         <div class="titlespices-box col-lg-3">
-            <a class="categorylink" href="Red.html"><h3>Red</h3></a>
+            <a class="categorylink" href="productdetail.html?product=product10"><h3>Red</h3></a>
             <p>- Chili </p>
             <img src="css/images/chili.jpg" class="mw-100" alt ="spice2">
         </div>
 
         <div class="titlespices-box col-lg-3">
-            <a class="categorylink" href="Green.html"><h3>Green</h3></a>
+            <a class="categorylink" href="productdetail.html?product=product11"><h3>Green</h3></a>
             <p>- Basilikum </p>
             <img src="css/images/basilikum.jpg" class="mw-100" alt ="spice1">
         </div>
 
         <div class="titlespices-box col-lg-3">
-            <a class="categorylink" href="Black.html"><h3>Black</h3></a>
+            <a class="categorylink" href="productdetail.html?product=product12"><h3>Black</h3></a>
             <p>- Schwarzer Pfeffer </p>
             <img src="css/images/pfeffer.jpg" class="mw-100" alt ="spice2">
         </div>
@@ -203,6 +202,27 @@
 </section>
 
 <div id="footerContainer"> </div>
+
+<script>
+    $(document).ready(function() {
+        productId1 = 1 ;
+        $.ajax({
+            url: "http://localhost:8080/product/" + productId1,
+            type: 'GET',
+            success: function(products) {
+
+                products.forEach(function(product, index) {
+                    var productDiv = document.getElementById('product' + (index + 1));
+                    if (productDiv) {
+
+                        document.getElementById('productName' + (index + 1)).innerText = product.productname;
+
+                    }
+                });
+            }
+        });
+    });
+</script>
 
 </body>
 
