@@ -15,13 +15,13 @@ $(document).ready(function () {
     }
 
     function createCardElement(product) {
-        const card = $('<div>', { class: 'col-lg-3 col-md-4 col-sm-6 product-card' });
+        const card = $('<div>', { class: 'col-lg-3 product-card' });
         //const img = $('<img>', { src: `${product.image}`, class: 'card-img-top', alt: `${product.productname}` });
         const link = $('<a>', { class: 'categorylink', href: `productdetail.html?id=${product.id}` });
         const title = $('<h3>', { text: product.productname });
 
         link.append(title);
-
+        const price = $('<p>', { text: `Preis: ${product.price} €` });
         const description = $('<p>', { text: `- ${product.description}` });
         const counter = $('<div>', { class: 'counter mb-2 mt-2' });
         const minusButton = $('<button>', { class: 'btn btn-sm btn-outline-dark minus', text: '-' });
@@ -62,7 +62,7 @@ $(document).ready(function () {
             }
         });
 
-        card.append(link, description, counter, btnDiv);
+        card.append(link,price, description, counter, btnDiv);
 
         return card;
     }
