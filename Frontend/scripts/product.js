@@ -10,49 +10,10 @@ $(document).ready(function () {
             this.price = price;
             this.quantity = quantity;
             this.description = description;
-            //this image = image;
+            //this.image = image;
         }
     }
 
-    // Funktion zum Erstellen eines Kategorien-Elements
-    function createCategoryElement(category) {
-        const categoryDiv = $('<div>', { class: 'sortiment-box col-lg-4' });
-        const categoryTitle = $('<h3>', { text: category.name });
-        const categoryDescription = $('<p>', { text: `Eine Auswahl von ${category.name}` });
-        // Hier kannst du auch ein Bild für die Kategorie hinzufügen
-
-        categoryDiv.append(categoryTitle, categoryDescription);
-
-        return categoryDiv;
-    }
-
-    // Funktion zum Laden und Anzeigen der Kategorien
-    function loadCategories() {
-        $.ajax({
-            url: 'http://localhost:8080/categories', // Annahme: Diese URL gibt die Kategorien zurück
-            method: 'GET',
-            success: function (categories) {
-                const sortimentSection = $('#sortiment');
-                categories.forEach(category => {
-                    const categoryElement = createCategoryElement(category);
-                    sortimentSection.append(categoryElement);
-                });
-
-                // Event-Handler für die Kategorieauswahl
-                $('.sortiment-box').on('click', function () {
-                    const selectedCategoryName = $(this).find('h3').text();
-                    console.log('Kategorie ausgewählt:', selectedCategoryName);
-                    // Implementiere die Logik, um die Produkte der ausgewählten Kategorie anzuzeigen
-                    // Du musst die Produkte filtern und anzeigen, die zur ausgewählten Kategorie gehören
-                });
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    }
-
-    // Funktion zum Erstellen eines Produkt-Elements
     function createCardElement(product) {
         const card = $('<div>', { class: 'col-lg-3 product-card' });
         //const img = $('<img>', { src: `${product.image}`, class: 'card-img-top', alt: `${product.productname}` });
@@ -101,7 +62,7 @@ $(document).ready(function () {
             }
         });
 
-        card.append(link, price, description, counter, btnDiv);
+        card.append(link,price, description, counter, btnDiv);
 
         return card;
     }
@@ -114,7 +75,7 @@ $(document).ready(function () {
         if (productCategory) {
             $(categoryList).append(cardElement);
         } else {
-            console.error("Produkt konnte nicht gefunden werden");
+            console.error("Produkt konnte nicht gefunden werden")
         }
     }
 
@@ -131,7 +92,4 @@ $(document).ready(function () {
             console.log(error);
         }
     });
-
-    // Lade und zeige die Kategorien
-    loadCategories();
 });
