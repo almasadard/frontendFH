@@ -35,7 +35,7 @@ function getProductIdFromURL() {
 // Funktion zum Laden und Anzeigen der Produktdaten
 function loadProductDetails(productId) {
     $.ajax({
-        url: "http://localhost:8080/product/" + productId,
+        url: "http://localhost:8080/product/" +productId,
         type: "GET",
         success: function (product) {
             // Produktdaten anzeigen
