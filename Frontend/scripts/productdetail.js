@@ -1,7 +1,7 @@
 function createProductRow(product) {
     // HTML-Struktur mit Produktinformationen
-    const row = $('<div class="row mx-auto" style="max-width: 800px;"></div>');
-    const infoCol = $('<div class="col-md-6"></div>');
+    const row = $('<div class="row justify-content-center"></div>'); // Nutzen Sie 'justify-content-center' für die horizontale Zentrierung
+    const infoCol = $('<div class="col-md-6 text-center"></div>'); // 'text-center' für die Zentrierung des Inhalts
     const title = $(`<h1>${product.productname}</h1>`);
     const description = $(`<p>${product.description}</p>`);
     const price = $(`<h2>${product.price}€</h2>`);
