@@ -211,14 +211,8 @@
             type: 'GET',
             success: function(products) {
 
-                products.forEach(function(product, index) {
-                    var productDiv = document.getElementById('product' + (index + 1));
-                    if (productDiv) {
 
-                        document.getElementById('productName' + (index + 1)).innerText = product.productname;
-
-                    }
-                });
+                
             }
         });
     });
