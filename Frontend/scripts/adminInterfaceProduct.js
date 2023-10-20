@@ -28,10 +28,10 @@ function createProductTable(products) {
 
     const table = $("<table class='table table-striped mt-3'></table>");
     const thead = $("<thead class='align-middle'><tr></tr></thead>");
-    const thead1 = $("<th>ID</th><th>Name</th><th class='text-end pe-2'>Menge</th><th class='text-end pe-3'>Preis</th><th class='text-center'>Active</th>");
+    const thead1 = $("<th>ID</th><th>Name</th><th class='text-end pe-2'>Menge</th><th class='text-end pe-3'>Preis</th><th class='text-center'>Kategorie</th><th class='text-center'>Active</th>");
     thead.append(thead1);
 
-    const tbody = $("<tbody id='productTableBody'></tbody");
+    const tbody = $("<tbody id='productTableBody'></tbody>");
 
     for (let i = 0; i < products.length; i++) {
         let product = products[i];
@@ -40,7 +40,14 @@ function createProductTable(products) {
         row.append($("<td class='align-middle ps-0'>" + product.productname + "</td>"));
         row.append($("<td class='align-middle text-end pe-3'>" + product.quantity + "</td>"));
         row.append($("<td class='align-middle text-end pe-3'>" + product.price.toFixed(2) + " €</td>"));
+        row.append($("<td class='align-middle text-center'>" + product.category + "</td>")); // Anzeigen des Kategorienamens
         row.append($("<td class='align-middle text-center'>" + (product.active ? "&#10004;&#65039;" : "&#10060;") + "</td>"));
+
+        /*/ Bild hinzufügen
+        let imageCell = $("<td class='align-middle text-center'></td>");
+        let image = $("<img src='" + product.imageUrl + "' alt='" + product.productname + "' style='max-width: 100px; max-height: 100px;'/>");
+        imageCell.append(image);
+        row.append(imageCell);*/
 
         let editButton = $("<button class='btn btn-primary' id='editButton1'> Bearbeiten</button>");
         editButton.click(createEditProductHandler(product));
@@ -57,23 +64,39 @@ function createProductTable(products) {
     }
 
     table.append(thead, tbody);
-    container.empty().append("<h2 class='text-center mb-0'>Produktliste</h2>", table);
+    container.empty().append("<h2 class 'text-center mb-0'>Produktliste</h2>", table);
 }
+
 
 // Produkt löschen
 
 function deleteProduct(productId) {
-
+    // Zuerst das Produkt löschen
     $.ajax({
-        url: `http://localhost:8080/product/${productId}`,
+        url: "http://localhost:8080/product/" + productId,
         type: 'DELETE',
         headers: {
             'Authorization': localStorage.getItem('accessToken'),
         },
-        success: function (response) {
-            console.log('Produkt erfolgreich gelöscht:');
+        success: function (productResponse) {
             alert('Produkt erfolgreich gelöscht!');
-            loadProducts();
+            console.log("Gelöschtes Produkt:", productResponse);
+            // Wenn das Produkt erfolgreich gelöscht wurde, dann die zugehörige Datei löschen
+            $.ajax({
+                url: "http://localhost:8080/files/" + productId,
+                type: 'DELETE',
+                headers: {
+                    'Authorization': localStorage.getItem('accessToken'),
+                },
+                success: function (fileResponse) {
+                    console.log('File erfolgreich gelöscht:', fileResponse);
+                    loadProducts();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Fehler beim Löschen der Datei:', error);
+                    alert('Fehler beim Löschen der Datei.');
+                },
+            });
         },
         error: function (xhr, status, error) {
             console.error('Fehler beim Löschen des Produkts:', error);
@@ -81,6 +104,7 @@ function deleteProduct(productId) {
         },
     });
 }
+
 //Produkte bearbeiten (Ansicht)
 
 function createEditProductHandler(product) {

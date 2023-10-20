@@ -10,9 +10,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const productDescription = document.getElementById('inputProductDescription').value;
         const fileInput = document.getElementById("inputProductImg");
         const selectedFile = fileInput.files[0];
+/*
+        // Hier fügen wir die ausgewählte Kategorie-ID hinzu
+        const selectedCategoryId = document.getElementById('inputProductCategory').value;
 
+        // Hier fügen wir die ausgewählte Kategorie hinzu
+        const selectedCategoryName = document.getElementById('inputProductCategory').options[document.getElementById('inputProductCategory').selectedIndex].text;
+*/
         const formData = new FormData();
         formData.append("file", selectedFile);
+        //formData.append("category", selectedCategoryId);
+
 
         console.log(formData);
 
@@ -26,16 +34,18 @@ document.addEventListener('DOMContentLoaded', function () {
             success: function (response) {
                 console.log('File erfolgreich gesendet!', response);
                 loadProducts();
+
                 const product = {
                     productname: productName,
                     price: productPrice,
                     quantity: productQuantity,
                     description: productDescription,
                     imageUrl: response,
-                    categoryId: 1,
+                    //category: selectedCategoryName,
                 };
 
                 console.log(product);
+
                 $.ajax({
                     url: 'http://localhost:8080/product',
                     type: 'POST',
@@ -44,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     data: JSON.stringify(product),
                     success: function (response) {
                         console.log('Daten erfolgreich gesendet:', response);
-                        alert('Product erfolgreich erstellt!')
+                        alert('Produkt erfolgreich erstellt!')
                     },
                     error: function (xhr, status, error) {
                         console.log('Fehler beim erstellen des Produkts!')
