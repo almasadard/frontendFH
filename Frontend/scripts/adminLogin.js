@@ -1,5 +1,5 @@
 /*
-Nur ein Admin kann adminInterface.html aufrufen
+Nur ein Admin kann adminInterface-Seiten aufrufen
  */
 
 

@@ -1,1 +1,0 @@
-$("#navbarContainer").load("./navbar/navbaradmin.html");
