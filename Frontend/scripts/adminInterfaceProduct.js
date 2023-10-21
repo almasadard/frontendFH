@@ -9,9 +9,7 @@ function loadProducts() {
     $.ajax({
         url: "http://localhost:8080/product",
         method: "GET",
-        headers: {
-            "Authorization": "Bearer " + localStorage.getItem("accessToken")
-        },
+        headers: { "Authorization": localStorage.getItem("accessToken")},
         success: function (products) {
             allProducts = products;
             createProductTable(products);
@@ -21,14 +19,14 @@ function loadProducts() {
         }
     });
 }
-//Tabelle für Produktliste erstellen
+//Produktliste erstellen
 function createProductTable(products) {
     const container = $("#productListContainer");
-    container.find("h2").text("Produkt Liste");
+    container.find("h2").text("Produktliste");
 
     const table = $("<table class='table table-striped mt-3'></table>");
     const thead = $("<thead class='align-middle'><tr></tr></thead>");
-    const thead1 = $("<th>ID</th><th>Name</th><th class='text-end pe-2'>Menge</th><th class='text-end pe-3'>Preis</th><th class='text-center'>Kategorie</th><th class='text-center'>Active</th>");
+    const thead1 = $("<th>ID</th><th>Name</th><th class='text-end pe-2'>Menge</th><th class='text-end pe-3'>Preis</th><th class='text-center'>Kategorie</th><th class='text-center'>Status</th><th class='text-center'>Aktionen</th>");
     thead.append(thead1);
 
     const tbody = $("<tbody id='productTableBody'></tbody>");
@@ -40,14 +38,8 @@ function createProductTable(products) {
         row.append($("<td class='align-middle ps-0'>" + product.productname + "</td>"));
         row.append($("<td class='align-middle text-end pe-3'>" + product.quantity + "</td>"));
         row.append($("<td class='align-middle text-end pe-3'>" + product.price.toFixed(2) + " €</td>"));
-        row.append($("<td class='align-middle text-center'>" + product.category + "</td>")); // Anzeigen des Kategorienamens
+        row.append($("<td class='align-middle text-center'>" + product.category + "</td>"));
         row.append($("<td class='align-middle text-center'>" + (product.active ? "&#10004;&#65039;" : "&#10060;") + "</td>"));
-
-        /*/ Bild hinzufügen
-        let imageCell = $("<td class='align-middle text-center'></td>");
-        let image = $("<img src='" + product.imageUrl + "' alt='" + product.productname + "' style='max-width: 100px; max-height: 100px;'/>");
-        imageCell.append(image);
-        row.append(imageCell);*/
 
         let editButton = $("<button class='btn btn-primary' id='editButton1'> Bearbeiten</button>");
         editButton.click(createEditProductHandler(product));
@@ -64,49 +56,9 @@ function createProductTable(products) {
     }
 
     table.append(thead, tbody);
-    container.empty().append("<h2 class 'text-center mb-0'>Produktliste</h2>", table);
+    container.empty().append("<h2 class='text-center mb-0'>Produktliste</h2>", table);
 }
-
-
-// Produkt löschen
-
-function deleteProduct(productId) {
-    // Zuerst das Produkt löschen
-    $.ajax({
-        url: "http://localhost:8080/product/" + productId,
-        type: 'DELETE',
-        headers: {
-            'Authorization': localStorage.getItem('accessToken'),
-        },
-        success: function (productResponse) {
-            alert('Produkt erfolgreich gelöscht!');
-            console.log("Gelöschtes Produkt:", productResponse);
-            // Wenn das Produkt erfolgreich gelöscht wurde, dann die zugehörige Datei löschen
-            $.ajax({
-                url: "http://localhost:8080/files/" + productId,
-                type: 'DELETE',
-                headers: {
-                    'Authorization': localStorage.getItem('accessToken'),
-                },
-                success: function (fileResponse) {
-                    console.log('File erfolgreich gelöscht:', fileResponse);
-                    loadProducts();
-                },
-                error: function (xhr, status, error) {
-                    console.error('Fehler beim Löschen der Datei:', error);
-                    alert('Fehler beim Löschen der Datei.');
-                },
-            });
-        },
-        error: function (xhr, status, error) {
-            console.error('Fehler beim Löschen des Produkts:', error);
-            alert('Fehler beim Löschen des Produkts.');
-        },
-    });
-}
-
-//Produkte bearbeiten (Ansicht)
-
+//Produkte bearbeiten
 function createEditProductHandler(product) {
     return function () {
         let productTableBody = $("#productTableBody");
@@ -122,16 +74,20 @@ function createEditProductHandler(product) {
         let row1 = $("<div class='row'></div>");
 
         let titleCol = $("<div class='col-9 mb-3 ps-0'></div>");
-        let titleLabel = $("<label for='editproductname' class='form-label p-0'>Produktname</label>");
-        let titleInput = $("<input type='text' class='form-control' id='editProductName' name='editProductName' value='" + product.productname + "'></input>");
-        titleCol.append(titleLabel, titleInput)
+        let titleLabel = $("<label for='editProductName' class='form-label p-0'>Produktname</label>");
+        let titleInput = $("<input type='text' class='form-control' id='editProductName' name='editProductName' value='" + product.productname + "'>");
+        titleCol.append(titleLabel, titleInput);
 
         let activeCol = $("<div class='col-2 mb-3'></div>");
         let activeLabel = $("<label for='editProductActive' class='form-label p-0'>Active</label>");
         let activeDropdown = $("<select class='form-control' id='editProductActive'></select>");
         activeDropdown.append($("<option value='true'>&#10004;&#65039;</option>"));
         activeDropdown.append($("<option value='false'>&#10060;</option>"));
-        activeCol.append(activeLabel, activeDropdown)
+        if (product.active !== undefined) {
+            activeDropdown.val(product.active.toString());
+        }
+
+        activeCol.append(activeLabel, activeDropdown);
 
         row1.append(titleCol, activeCol);
 
@@ -144,15 +100,22 @@ function createEditProductHandler(product) {
 
         let col2 = $("<div class='col-6 col-sm-3'></div>");
         let quantityLabel = $("<label for='editProductQuantity' class='form-label p-0'>Produktmenge</label>");
-        let quantityInput = $("<input type='number' class='form-control' id='editProductQuantity' name='editProductQuantity' value='" + product.quantity + "'></input>");
+        let quantityInput = $("<input type='number' class='form-control' id='editProductQuantity' name='editProductQuantity' value='" + product.quantity + "'>");
         col2.append(quantityLabel, quantityInput);
 
         let col3 = $("<div class='col-6 col-sm-3'></div>");
         let imgLabel = $("<label for='editProductImg' class='form-label p-0'>Produktbild</label>");
-        let imgInput = $("<input type='file' class='form-control' id='editProductImg' name='editProductImg' value='" + product.img + "'></input>");
-        col2.append(imgLabel, imgInput);
+        let imgInput = $("<input type='file' class='form-control' id='editProductImg' name='editProductImg' value='" + product.imageUrl + "'>");
+        col3.append(imgLabel, imgInput);
 
-        row2.append(col1, col2, col3);
+        let col4 = $("<div class='col-6 col-sm-3'></div>");
+        let categoryLabel = $("<label for='editProductCategory' class='form-label p-0'>Kategorie</label>");
+        let categoryInput = $("<input type='text' class='form-control' id='editProductCategory' name='editProductCategory' value='" + product.category + "'>");
+        col4.append(categoryLabel, categoryInput);
+
+
+        row2.append(col1, col2, col3, col4);
+
 
         let row3 = $("<div class='row mb-3'></div>");
 
@@ -177,11 +140,45 @@ function createEditProductHandler(product) {
         });
         row4.append(saveCol, cancelCol);
 
-        productTableBody.append(row1, row2, row3,row4);
+        productTableBody.append(row1, row2, row3, row4);
 
         container.append(productTableBody);
     };
 }
+
+//Produkte löschen
+function deleteProduct(productId) {
+
+    $.ajax({
+        url: "http://localhost:8080/product/" + productId,
+        type: 'DELETE',
+        headers: { "Authorization": localStorage.getItem("accessToken")},
+        success: function (productResponse) {
+            alert('Produkt erfolgreich gelöscht!');
+            //deleteProductFile(productId); // Dateilöschung
+        },
+        error: function (xhr, status, error) {
+            console.error('Fehler beim Löschen des Produkts:', error);
+            alert('Fehler beim Löschen des Produkts.');
+        }
+    });
+}
+//File löschen
+/*function deleteProductFile(reference) {
+    $.ajax({
+        url: "http://localhost:8080/files/" + reference,
+        type: 'DELETE',
+        headers: { "Authorization": localStorage.getItem("accessToken")},
+        success: function (fileResponse) {
+            console.log('File erfolgreich gelöscht:', fileResponse);
+            loadProducts();
+        },
+        error: function (xhr, status, error) {
+            console.error('Fehler beim Löschen der Datei:', error);
+            alert('Fehler beim Löschen der Datei.');
+        }
+    });
+}*/
 
 // Produkte speichern
 
@@ -201,9 +198,7 @@ function saveProduct(product) {
             method: 'PUT',
             contentType: false,
             processData: false,
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem("accessToken")
-            },
+            headers: { "Authorization": localStorage.getItem("accessToken")},
             data: formData,
             success: function (response) {
                 console.log('File erfolgreich geändert:', response);
@@ -217,21 +212,20 @@ function saveProduct(product) {
     // Aktualisierte Produktinformationen
     const updatedProduct = {
         id: product.id,
-        name: $("#editProductName").val().trim() || product.productname,
+        productname: $("#editProductName").val().trim() || product.productname,
         price: parseFloat($("#editProductPrice").val()) || product.price,
         quantity: parseInt($("#editProductQuantity").val()) || product.quantity,
         imageUrl: product.imageUrl,
         description: $("#editProductDescription").val().trim() || product.description,
-        active: $("#editProductActive").val() === "true"
+        active: $("#editProductActive").val() === "true",
+        category: $("#editProductCategory").val().trim() || product.category
     };
 
     // Produkt aktualisieren
     $.ajax({
         url: "http://localhost:8080/product/update",
         method: "PUT",
-        headers: {
-            "Authorization": "Bearer " + localStorage.getItem("accessToken")
-        },
+        headers: { "Authorization": localStorage.getItem("accessToken")},
         data: JSON.stringify(updatedProduct),
         contentType: "application/json",
         success: function (response) {
