@@ -26,7 +26,7 @@ function createProductTable(products) {
 
     const table = $("<table class='table table-striped mt-3'></table>");
     const thead = $("<thead class='align-middle'><tr></tr></thead>");
-    const thead1 = $("<th>ID</th><th>Name</th><th class='text-end pe-2'>Menge</th><th class='text-end pe-3'>Preis</th><th class='text-center'>Kategorie</th><th class='text-center'>Status</th><th class='text-center'>Aktionen</th>");
+    const thead1 = $("<th>ID</th><th>Name</th><th class='text-end pe-2'>Menge</th><th class='text-end pe-3'>Preis</th><th class='text-center'>Kategorie</th><th class='text-center'>Aktionen</th>");
     thead.append(thead1);
 
     const tbody = $("<tbody id='productTableBody'></tbody>");
@@ -39,7 +39,6 @@ function createProductTable(products) {
         row.append($("<td class='align-middle text-end pe-3'>" + product.quantity + "</td>"));
         row.append($("<td class='align-middle text-end pe-3'>" + product.price.toFixed(2) + " €</td>"));
         row.append($("<td class='align-middle text-center'>" + product.category + "</td>"));
-        row.append($("<td class='align-middle text-center'>" + (product.active ? "&#10004;&#65039;" : "&#10060;") + "</td>"));
 
         let editButton = $("<button class='btn btn-primary' id='editButton1'> Bearbeiten</button>");
         editButton.click(createEditProductHandler(product));
@@ -78,18 +77,13 @@ function createEditProductHandler(product) {
         let titleInput = $("<input type='text' class='form-control' id='editProductName' name='editProductName' value='" + product.productname + "'>");
         titleCol.append(titleLabel, titleInput);
 
-        let activeCol = $("<div class='col-2 mb-3'></div>");
-        let activeLabel = $("<label for='editProductActive' class='form-label p-0'>Active</label>");
-        let activeDropdown = $("<select class='form-control' id='editProductActive'></select>");
-        activeDropdown.append($("<option value='true'>&#10004;&#65039;</option>"));
-        activeDropdown.append($("<option value='false'>&#10060;</option>"));
-        if (product.active !== undefined) {
-            activeDropdown.val(product.active.toString());
-        }
+        // Füge das Kategorie-Feld hinzu
+        let categoryCol = $("<div class='col-3 mb-3 ps-0'></div>");
+        let categoryLabel = $("<label for='editProductCategory' class='form-label p-0'>Kategorie</label>");
+        let categoryInput = $("<input type='text' class='form-control' id='editProductCategory' name='editProductCategory' value='" + product.category + "'>");
+        categoryCol.append(categoryLabel, categoryInput);
 
-        activeCol.append(activeLabel, activeDropdown);
-
-        row1.append(titleCol, activeCol);
+        row1.append(titleCol, categoryCol);
 
         let row2 = $("<div class='row mb-3'></div>");
 
@@ -103,18 +97,12 @@ function createEditProductHandler(product) {
         let quantityInput = $("<input type='number' class='form-control' id='editProductQuantity' name='editProductQuantity' value='" + product.quantity + "'>");
         col2.append(quantityLabel, quantityInput);
 
-        let col3 = $("<div class='col-6 col-sm-3'></div>");
+        let col3 = $("<div class='col-6 col-sm-6'></div>");  // Ändern Sie die Breite auf 6
         let imgLabel = $("<label for='editProductImg' class='form-label p-0'>Produktbild</label>");
         let imgInput = $("<input type='file' class='form-control' id='editProductImg' name='editProductImg' value='" + product.imageUrl + "'>");
         col3.append(imgLabel, imgInput);
 
-        let col4 = $("<div class='col-6 col-sm-3'></div>");
-        let categoryLabel = $("<label for='editProductCategory' class='form-label p-0'>Kategorie</label>");
-        let categoryInput = $("<input type='text' class='form-control' id='editProductCategory' name='editProductCategory' value='" + product.category + "'>");
-        col4.append(categoryLabel, categoryInput);
-
-
-        row2.append(col1, col2, col3, col4);
+        row2.append(col1, col2, col3);
 
 
         let row3 = $("<div class='row mb-3'></div>");
@@ -217,7 +205,6 @@ function saveProduct(product) {
         quantity: parseInt($("#editProductQuantity").val()) || product.quantity,
         imageUrl: product.imageUrl,
         description: $("#editProductDescription").val().trim() || product.description,
-        active: $("#editProductActive").val() === "true",
         category: $("#editProductCategory").val().trim() || product.category
     };
 
