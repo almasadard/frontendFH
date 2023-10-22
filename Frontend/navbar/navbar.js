@@ -26,6 +26,9 @@ $("#navbarContainer").load("./navbar/navbar.html", function() {
         if (localStorage.getItem("accessToken")) {
             // Ändern Sie den Text von "Login" in "Eingeloggt"
             $("#login-link").text('Eingeloggt');
+
+            //Shop und Warenkorb Seite nur bei Login anzeigen
+            $("#product-link, #warenkorb-link").show();
         }
     }
 
