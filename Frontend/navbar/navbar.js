@@ -24,7 +24,7 @@ $("#navbarContainer").load("./navbar/navbar.html", function() {
     // Funktion, um den Anmeldestatus anzuzeigen
     function setLoginStatus() {
         if (localStorage.getItem("accessToken")) {
-            // Ändern Sie den Text von "Login" in "Eingeloggt"
+            // Ändert den Text von "Login" in "Eingeloggt"
             $("#login-link").text('Eingeloggt');
 
             //Shop und Warenkorb Seite nur bei Login anzeigen
@@ -32,21 +32,21 @@ $("#navbarContainer").load("./navbar/navbar.html", function() {
         }
     }
 
-// Rufe die Funktion zur Festlegung des Anmeldestatus auf der Seite zuerst auf
+// Ruft die Funktion zur Festlegung des Anmeldestatus auf der Seite zuerst auf
     setLoginStatus();
 
 // Wenn der Benutzer eingeloggt ist
     if (localStorage.getItem("accessToken")) {
-        // Verstecke "Login" und zeige "Logout"
+        // Versteckt "Login" und zeigt "Logout"
         $(".nav-link:contains('Login')").hide();
         $("#logout-link").show();
     }
 
     $("#logout-link").click(function() {
-        // Entferne den Zugriffstoken aus dem Local Storage
+        // Entfernt den Zugriffstoken aus dem Local Storage
         localStorage.removeItem("accessToken");
 
-        // Leite den Benutzer zur Login-Seite weiter
+        // Leitet den Benutzer zur Login-Seite weiter
         window.location.href = "http://localhost:63343/frontendFH/Frontend/login.html";
     });
 
