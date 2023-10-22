@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     loadUsers();
 });
@@ -26,7 +25,7 @@ function createUserTable(users) {
 
     const table = $("<table class='table table-striped mt-3'></table>");
     const thead = $("<thead class='align-middle'><tr></tr></thead>");
-    const thead1 = $("<th>ID</th><th>E-Mail</th><th>Passwort</th><th>Active</th><th>Aktionen</th>");
+    const thead1 = $("<th>ID</th><th>E-Mail</th><th>Passwort</th><th>Status</th><th>Aktionen</th>");
     thead.append(thead1);
 
     const tbody = $("<tbody id='userTableBody'></tbody>");
@@ -77,8 +76,8 @@ function editUser(userId) {
 
     // Aktivitäts-Dropdown
     let activeCol = $("<div class='col-6'></div>");
-    let activeLabel = $("<label for='editProductActive' class='form-label p-0'>Active</label>");
-    let activeDropdown = $("<select class='form-control' id='editProductActive'></select>");
+    let activeLabel = $("<label for='editUserActive' class='form-label p-0'>Status</label>");
+    let activeDropdown = $("<select class='form-control' id='editUserActive'></select>");
     activeDropdown.append($("<option value='true'>&#10004;&#65039;</option>"));
     activeDropdown.append($("<option value='false'>&#10060;</option>"));
     activeCol.append(activeLabel, activeDropdown);
@@ -117,7 +116,7 @@ function editUser(userId) {
 
     saveButton.click(function () {
         const newEmail = $("#editEmail").val();
-        const newActive = $("#editProductActive").val();
+        const newActive = $("#editUserActive").val();
 
         // Erfassen des neuen Passworts
         const newPassword = $("#editNewPassword").val();
@@ -144,7 +143,7 @@ function saveUser(userId, updatedUser) {
         method: "PUT",
         data: JSON.stringify(updatedUser),
         contentType: "application/json",
-        headers: { "Authorization": token }, // Fügen Sie das Token zur Autorisierung hinzu
+        headers: { "Authorization": token },
         success: function (response) {
             console.log("Updated user: ", response);
             loadUsers();
@@ -172,4 +171,4 @@ function deleteUser(userId) {
             }
         });
     }
-};
+}

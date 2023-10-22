@@ -132,7 +132,8 @@ function handleRegistration(event) {
         lastname: lastname,
         streetname: streetname,
         postcode: postcode,
-        city: city
+        city: city,
+        active: true
     };
 
     // Send user creation request
