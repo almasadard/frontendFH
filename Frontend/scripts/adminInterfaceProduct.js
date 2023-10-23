@@ -189,7 +189,6 @@ function saveProduct(product) {
             headers: { "Authorization": localStorage.getItem("accessToken")},
             data: formData,
             success: function (response) {
-                console.log('File erfolgreich geändert:', response);
                 alert('File erfolgreich geändert!');
             }
         });
